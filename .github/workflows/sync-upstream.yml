@@ -31,13 +31,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Fast-forward from upstream
+      - name: Merge from upstream
         id: sync
         run: |
           git remote add upstream https://github.com/CookSleep/gpt_image_playground.git
           git fetch upstream main
           BEFORE=$(git rev-parse HEAD)
-          git merge --ff-only upstream/main
+          git merge --no-edit upstream/main
           AFTER=$(git rev-parse HEAD)
           if [ "$BEFORE" != "$AFTER" ]; then
             git push origin main
