@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    tags: ['v*']
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -27,10 +27,6 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-        env:
-          VITE_DEFAULT_API_URL: ${{ secrets.VITE_DEFAULT_API_URL }}
-          VITE_LOCK_PRESET_CONFIG_PARAMS: 'false'
-          VITE_PREVENT_PRESET_CONFIG_DELETION: 'false'
 
       - uses: actions/upload-pages-artifact@v3
         with:
