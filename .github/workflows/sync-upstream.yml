@@ -31,7 +31,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge from upstream while preserving local deployment workflow
+      - name: Merge from upstream while preserving local workflows
         id: sync
         run: |
           git remote add upstream https://github.com/CookSleep/gpt_image_playground.git
@@ -45,11 +45,11 @@ jobs:
 
           BEFORE=$(git rev-parse HEAD)
           if ! git merge --no-commit --no-ff upstream/main; then
-            echo "Merge reported conflicts; restoring the fork-specific deployment workflow."
+            echo "Merge reported conflicts; restoring the fork-specific workflows."
           fi
 
-          # Never let upstream replace this fork's Pages deployment workflow.
-          git restore --source="$BEFORE" --staged --worktree -- .github/workflows/deploy.yml
+          # Preserve all fork workflows; GITHUB_TOKEN cannot push workflow changes.
+          git restore --source="$BEFORE" --staged --worktree -- .github/workflows/
 
           CONFLICTS=$(git diff --name-only --diff-filter=U)
           if [ -n "$CONFLICTS" ]; then
